@@ -9,18 +9,18 @@ set -ex
 # located in https://github.com/appunite/docker by just wrapping it in a script
 # which apparently magically accepts the licenses.
 
-SDK=6609375
-mkdir -p sdk/cmdline-tools
+SDK=10406996
+mkdir -p sdk
 wget -q --tries=20 https://dl.google.com/android/repository/commandlinetools-linux-${SDK}_latest.zip
-unzip -q -d sdk/cmdline-tools commandlinetools-linux-${SDK}_latest.zip
+unzip -q -d sdk commandlinetools-linux-${SDK}_latest.zip
 
 case "$1" in
   arm | armv7)
-    api=24
+    api=28
     image="system-images;android-${api};default;armeabi-v7a"
     ;;
   aarch64)
-    api=24
+    api=28
     image="system-images;android-${api};google_apis;arm64-v8a"
     ;;
   i686)
@@ -51,22 +51,16 @@ echo '#Fri Nov 03 10:11:27 CET 2017 count=0' >> /root/.android/repositories.cfg
 #
 # | grep -v = || true    removes the progress bar output from the sdkmanager
 # which produces an insane amount of output.
-yes | ./sdk/cmdline-tools/tools/bin/sdkmanager --licenses --no_https | grep -v = || true
-yes | ./sdk/cmdline-tools/tools/bin/sdkmanager --no_https \
+yes | ./sdk/cmdline-tools/bin/sdkmanager --licenses --no_https | grep -v = || true
+yes | ./sdk/cmdline-tools/bin/sdkmanager --no_https \
+        "emulator" \
         "platform-tools" \
         "platforms;android-${api}" \
         "${image}" | grep -v = || true
 
-# The newer emulator versions (31.3.12 or higher) fail to a valid AVD and the test gets stuck.
-# Until we figure out why, we use the older version (31.3.11).
-wget -q --tries=20 https://redirector.gvt1.com/edgedl/android/repository/emulator-linux_x64-9058569.zip
-unzip -q -d sdk emulator-linux_x64-9058569.zip
-
-cp /android/android-emulator-package.xml /android/sdk/emulator/package.xml
-
 echo "no" |
-    ./sdk/cmdline-tools/tools/bin/avdmanager create avd \
+    ./sdk/cmdline-tools/bin/avdmanager create avd \
         --name "${1}" \
         --package "${image}" | grep -v = || true
 
-rm -rf commandlinetools-linux-${SDK}_latest.zip emulator-linux_x64-9058569.zip
+rm -rf commandlinetools-linux-${SDK}_latest.zip
