@@ -706,6 +706,8 @@ pub const PTRACE_LISTEN: c_int = 0x4208;
 pub const PTRACE_PEEKSIGINFO: c_int = 0x4209;
 pub const PTRACE_GETSIGMASK: c_uint = 0x420a;
 pub const PTRACE_SETSIGMASK: c_uint = 0x420b;
+pub const PTRACE_GET_SYSCALL_INFO: c_int = 0x420e;
+pub const PTRACE_GET_RSEQ_CONFIGURATION: c_int = 0x420f;
 
 pub const AF_IB: c_int = 27;
 pub const AF_MPLS: c_int = 28;
