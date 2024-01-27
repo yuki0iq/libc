@@ -6788,6 +6788,19 @@ cfg_if! {
     } else if #[cfg(any(target_env = "musl", target_env = "ohos"))] {
         mod musl;
         pub use self::musl::*;
+
+        pub const NT_X86_XSTATE: c_int = 0x202;
+        pub const NT_ARM_TLS: c_int = 0x401;
+        pub const NT_ARM_SVE: c_int = 0x405;
+        pub const NT_ARM_PACA_KEYS: c_int = 0x407;
+        pub const NT_ARM_PACG_KEYS: c_int = 0x408;
+        pub const NT_ARM_TAGGED_ADDR_CTRL: c_int = 0x409;
+        pub const NT_ARM_PAC_ENABLED_KEYS: c_int = 0x40a;
+        pub const NT_ARM_SSVE: c_int = 0x40b;
+        pub const NT_ARM_ZA: c_int = 0x40c;
+        pub const NT_ARM_ZT: c_int = 0x40d;
+        pub const CLONE_NEWTIME: c_int = 0x80;
+        pub const SIGEV_THREAD_ID: c_int = 4;
     } else if #[cfg(target_env = "gnu")] {
         mod gnu;
         pub use self::gnu::*;
@@ -6796,3 +6809,10 @@ cfg_if! {
 
 mod arch;
 pub use self::arch::*;
+
+pub const F_SETSIG: c_int = 10;
+pub const SI_USER: c_int = 0;
+pub const SI_KERNEL: c_int = 128;
+
+#[cfg(target_arch = "aarch64")]
+pub const NT_ARM_SYSTEM_CALL: c_int = 0x404;

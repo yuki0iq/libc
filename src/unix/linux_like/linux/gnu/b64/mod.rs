@@ -37,7 +37,8 @@ s! {
     }
 
     pub struct sysinfo {
-        pub uptime: i64,
+        // Because fuck you, glibc
+        pub uptime: u64,
         pub loads: [u64; 3],
         pub totalram: u64,
         pub freeram: u64,
